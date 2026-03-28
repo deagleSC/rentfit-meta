@@ -1,0 +1,6 @@
+[submodule "rentfit-v1-be"]
+	path = rentfit-v1-be
+	url = https://github.com/deagleSC/rentfit-v1-be.git
+[submodule "rentfit-v1-web"]
+	path = rentfit-v1-web
+	url = https://github.com/deagleSC/rentfit-v1-web.git

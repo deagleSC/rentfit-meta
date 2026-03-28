@@ -1,0 +1,58 @@
+# RentFit meta
+
+Thin repository that groups the RentFit product stack: **backend** ([rentfit-v1-be](https://github.com/deagleSC/rentfit-v1-be)) and **frontend** ([rentfit-v1-web](https://github.com/deagleSC/rentfit-v1-web)) as [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+
+## Clone
+
+```bash
+git clone --recurse-submodules https://github.com/deagleSC/rentfit-meta.git
+cd rentfit-meta
+```
+
+If you already cloned without submodules:
+
+```bash
+git submodule update --init --recursive
+```
+
+## Layout
+
+| Path            | Role                                      |
+|-----------------|-------------------------------------------|
+| `rentfit-v1-be` | API — Express, TypeScript, MongoDB        |
+| `rentfit-v1-web`| App — Next.js                             |
+
+## Local development
+
+1. **MongoDB** — running locally (default URI is in `rentfit-v1-be`’s `.env.example`).
+2. **Backend** — in `rentfit-v1-be`, copy `.env.example` to `.env`, install deps, then:
+
+   ```bash
+   cd rentfit-v1-be && npm install && npm run dev
+   ```
+
+   Default API URL is `http://localhost:8000`.
+
+3. **Frontend** — in `rentfit-v1-web`, copy `.env.example` to `.env`. Point the app at the API (defaults in `.env.example` already use `http://localhost:8000` for `NEXT_PUBLIC_API_URL`):
+
+   ```bash
+   cd rentfit-v1-web && npm install && npm run dev
+   ```
+
+4. **CORS** — for cookies and credentialed requests, ensure `CORS_ORIGIN` in the backend `.env` includes your frontend origin (e.g. `http://localhost:3000`).
+
+## Editor
+
+Open `rentfit.code-workspace` in VS Code or Cursor for a multi-root workspace over both submodules.
+
+## Working inside a submodule
+
+Commits and pushes happen **inside** each submodule directory on that repo’s branches. From the meta repo, `git status` only shows when a submodule pointer has moved; push submodule changes from `rentfit-v1-be` / `rentfit-v1-web`, then commit the updated pointers in `rentfit-meta` if you want the meta repo to record those revisions.
+
+## Updating submodule checkouts
+
+```bash
+git submodule update --remote --merge
+```
+
+(Review changes in each repo before committing updated submodule SHAs in this repo.)
