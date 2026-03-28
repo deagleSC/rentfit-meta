@@ -23,6 +23,35 @@ git submodule update --init --recursive
 | `rentfit-v1-web`           | Product app — Next.js              |
 | `rentfit-marketing-website`| Marketing site — Next.js           |
 
+## System design
+
+RentFit splits **marketing** (discovery and CTAs), **product** (authenticated app and AI search), and **API** (data and auth). The marketing site sends users to the product URL configured at build time; the product talks to the API; the API persists data in MongoDB and can call an LLM provider for AI features.
+
+```mermaid
+flowchart TB
+  subgraph clients["Clients"]
+    U[("Users")]
+  end
+
+  subgraph browser["Browser"]
+    MW["Marketing site\nNext.js — rentfit-marketing-website"]
+    PW["Product app\nNext.js — rentfit-v1-web"]
+  end
+
+  subgraph servers["Application tier"]
+    API["API\nExpress — rentfit-v1-be"]
+    DB[("MongoDB")]
+    LLM["LLM API\ne.g. OpenRouter"]
+  end
+
+  U --> MW
+  U --> PW
+  MW -->|"NEXT_PUBLIC_APP_URL\n(sign up / open app)"| PW
+  PW -->|"NEXT_PUBLIC_API_URL\n(REST + cookies)"| API
+  API --> DB
+  API -.->|"AI / chat"| LLM
+```
+
 ## Local development
 
 1. **MongoDB** — running locally (default URI is in `rentfit-v1-be`’s `.env.example`).
